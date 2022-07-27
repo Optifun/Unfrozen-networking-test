@@ -1,0 +1,24 @@
+# tye application configuration file
+# read all about it at https://github.com/dotnet/tye
+#
+# when you've given us a try, we'd love to know what you think:
+#    https://aka.ms/AA7q20u
+#
+name: unfrozen-networking-test
+services:
+  - name: chat-api
+    project: backend/Chat.API/Chat.API.csproj
+    bindings:
+      - port: 8081
+    tags:
+      - bc
+  - name: postgres
+    image: postgres:12
+    bindings:
+      - port: 5551
+        connectionString: "Host=${host}; Port=5551; Database=chat-db;"
+    env:
+      - POSTGRES_PASSWORD=12345
+        POSTGRES_USER=chat-backend
+    tags:
+      - db
