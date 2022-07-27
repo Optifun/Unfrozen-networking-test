@@ -8,17 +8,11 @@ namespace Chat.API.Mapping
     {
         public void Register(TypeAdapterConfig config)
         {
-            config.ForType<Message, MessageDTO>()
-                .Map(dest => new Message()
-                    {
-                        Text = dest.Text,
-                        User = new User()
-                        {
-                            Name = dest.Username,
-                            Color = dest.Color
-                        }
-                    },
-                    src => new MessageDTO(src.User.Name, src.Text, src.User.Color));
+            config
+                .ForType<Message, MessageDTO>()
+                .Map(dest => dest,
+                    src => src.User)
+                .Map(dest => dest.Username, src => src.User.Name);
         }
     }
 }
