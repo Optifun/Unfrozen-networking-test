@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using Chat.API.Mapping;
+using Mapster;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -10,6 +13,12 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+var mappingConfig = TypeAdapterConfig.GlobalSettings.Default.Config;
+IList<IRegister> registers = mappingConfig.Scan(typeof(MessageConfig).Assembly);
+
+foreach (IRegister register in registers)
+    mappingConfig.Apply(register);
 
 var app = builder.Build();
 

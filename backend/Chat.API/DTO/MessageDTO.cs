@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace Chat.API.DTO
+﻿namespace Chat.API.DTO
 {
-    public record MessageDTO(string Username, string Text, Color Color);
+    public record MessageDTO(string Username, string Text, long Color);
 }

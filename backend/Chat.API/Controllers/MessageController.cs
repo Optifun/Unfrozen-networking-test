@@ -21,7 +21,7 @@ namespace Chat.API.Controllers
         [HttpGet(Name = "GetMessages")]
         public IEnumerable<MessageDTO> Get([FromQuery] int lastCount)
         {
-            return new[] {new MessageDTO("Nick", "Hello world", Color.Aqua)};
+            return new[] {new MessageDTO("Nick", "Hello world", Color.Aqua.ToArgb())};
         }
     }
 }
