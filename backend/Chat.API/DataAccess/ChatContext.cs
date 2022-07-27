@@ -35,6 +35,11 @@ namespace Chat.API.DataAccess
 
                 entity.ToTable("message");
 
+                entity.Property(e => e.Created)
+                    .HasColumnType("timestamp without time zone")
+                    .HasColumnName("created")
+                    .HasDefaultValueSql("now()");
+
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Text)

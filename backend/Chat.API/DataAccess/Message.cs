@@ -8,6 +8,7 @@ namespace Chat.API.DataAccess
         public Guid Id { get; set; }
         public string Text { get; set; } = null!;
         public Guid UserId { get; set; }
+        public DateTime Created { get; set; }
 
         public virtual User User { get; set; } = null!;
     }
