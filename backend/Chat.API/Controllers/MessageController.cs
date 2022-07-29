@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using Chat.API.DataAccess;
+using Chat.API.Services;
 using Chat.Shared.DTO;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
@@ -13,27 +14,20 @@ namespace Chat.API.Controllers
     public class MessageController : ControllerBase
     {
         private readonly ILogger<MessageController> _logger;
+        private readonly MessageRepository _messageRepository;
 
-        public MessageController(ILogger<MessageController> logger)
+        public MessageController(ILogger<MessageController> logger, MessageRepository messageRepository)
         {
+            _messageRepository = messageRepository;
             _logger = logger;
         }
 
         [HttpGet("GetMessages")]
         public IEnumerable<MessageDTO> Get([FromQuery] int lastCount)
         {
-            return new Message[]
-            {
-                new()
-                {
-                    Text = "Hello world",
-                    User = new()
-                    {
-                        Name = "Nick",
-                        Color = Color.Aqua.ToArgb()
-                    }
-                }
-            }.Adapt<IEnumerable<MessageDTO>>();
+            return _messageRepository
+                .GetLast(lastCount)
+                .Adapt<List<MessageDTO>>();
         }
     }
 }

@@ -18,12 +18,12 @@ namespace Chat.API.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<Message>> GetLast(int count)
+        public async Task<List<Message>> GetLast(int count)
         {
             return await _context.Messages
                 .OrderBy(msg => msg.Created)
                 .TakeLast(count)
-                .ToArrayAsync();
+                .ToListAsync();
         }
 
         public async Task Create(string username, string text, long color)

@@ -20,8 +20,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ChatContext>();
 builder.Services.AddSignalR();
 
-builder.Services.AddSingleton<MessageRepository>();
-builder.Services.AddSingleton<UserRepository>();
+builder.Services.AddScoped<MessageRepository>();
+builder.Services.AddScoped<UserRepository>();
 
 var mappingConfig = TypeAdapterConfig.GlobalSettings.Default.Config;
 IList<IRegister> registers = mappingConfig.Scan(typeof(MessageConfig).Assembly);
