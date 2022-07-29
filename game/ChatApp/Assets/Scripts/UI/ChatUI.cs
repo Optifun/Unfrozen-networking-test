@@ -27,5 +27,11 @@ namespace UI
             LoginCanvas.enabled = false;
             ChatCanvas.enabled = true;
         }
+
+        public void EnterLobby()
+        {
+            LoginCanvas.enabled = true;
+            ChatCanvas.enabled = false;
+        }
     }
 }
