@@ -18,7 +18,7 @@ namespace Chat.API.Controllers
             _userRepository = userRepository;
         }
 
-        [HttpPost]
+        [HttpPut]
         public async Task<ActionResult<UserDTO>> AuthUser([FromBody] UserDTO user)
         {
             User userDb = await  _userRepository.GetOrAdd(user.Name, user.Color);

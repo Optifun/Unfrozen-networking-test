@@ -18,7 +18,7 @@ namespace Chat.Client
 
         public ChatClient(IPAddress address)
         {
-            _connection = new HubConnectionBuilder().WithUrl($"ws://{address}/ws/chat").Build();
+            _connection = new HubConnectionBuilder().WithUrl($"ws://{address}:8081/ws/chat").Build();
 
             _connection.On(WSMessage.ReceiveLast10.ToString(), (IEnumerable<MessageDTO> messages) => { LastMessagesReceived?.Invoke(messages.ToList()); });
 

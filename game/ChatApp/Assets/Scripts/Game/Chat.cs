@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using Chat.Client;
 using Chat.Shared;
 using Chat.Shared.DTO;
 using Cysharp.Threading.Tasks;
+using DefaultNamespace;
 using Newtonsoft.Json;
 using UI;
 using UnityEngine;
@@ -21,6 +23,8 @@ namespace Game
         public Chat(ChatUI chatUI)
         {
             _chatUI = chatUI;
+            _chatUI.OnLogin += Login;
+            _chatUI.OnSend += SendMessage;
         }
 
         private async void Login(IPAddress ipAddress, string username, Color color)
@@ -40,8 +44,6 @@ namespace Game
             _client.LastMessagesReceived += PopulateMessages;
             _client.MessageReceived += PrintMessage;
 
-            _chatUI.OnLogin += Login;
-            _chatUI.OnSend += SendMessage;
             return _client.Connect();
         }
 
@@ -54,8 +56,12 @@ namespace Game
 
         private async UniTask<UserDTO> SendAuthRequest(IPAddress ipAddress, string username, int color)
         {
+            string json = JsonConvert.SerializeObject(new UserDTO(username, color));
+
             UnityWebRequest request = await UnityWebRequest
-                .Post($"http://{ipAddress}/auth", JsonConvert.SerializeObject(new UserDTO(username, color)))
+                .Put($"http://{ipAddress}:8081/Auth", Encoding.Default.GetBytes(json))
+                .WithHeader("Content-Type", "application/json")
+                .WithHeader("Accept", "application/json")
                 .SendWebRequest();
 
             if (request.result == UnityWebRequest.Result.Success)
