@@ -18,6 +18,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ChatContext>();
+builder.Services.AddSignalR();
 
 builder.Services.AddSingleton<MessageRepository>();
 builder.Services.AddSingleton<UserRepository>();
@@ -42,5 +43,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<ChatHub>("/ws/chat");
 
 app.Run();
