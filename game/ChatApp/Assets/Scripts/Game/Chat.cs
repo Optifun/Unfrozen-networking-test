@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 using Chat.Client;
 using Chat.Shared;
 using Chat.Shared.DTO;
@@ -28,9 +29,9 @@ namespace Game
             _chatUI.OnSend += SendMessage;
         }
 
-        private async void Login(string username, Color color)
+        private async void Login(IPAddress ipAddress, string username, Color color)
         {
-            UserDTO user = await SendAuthRequest(username, ToARGB(color));
+            UserDTO user = await SendAuthRequest(ipAddress, username, ToARGB(color));
             if (user != null)
             {
                 _user = user;
@@ -46,10 +47,10 @@ namespace Game
             PrintMessage(message);
         }
 
-        private async UniTask<UserDTO> SendAuthRequest(string username, int color)
+        private async UniTask<UserDTO> SendAuthRequest(IPAddress ipAddress, string username, int color)
         {
             UnityWebRequest request = await UnityWebRequest
-                .Post("http://localhost/auth", JsonConvert.SerializeObject(new UserDTO(username, color)))
+                .Post($"http://{ipAddress}/auth", JsonConvert.SerializeObject(new UserDTO(username, color)))
                 .SendWebRequest();
 
             if (request.result == UnityWebRequest.Result.Success)
@@ -61,7 +62,7 @@ namespace Game
         private int ToARGB(Color color)
         {
             int ToHex(float value) =>
-                (int) (value * 256);
+                (int) (value * 255);
 
             return System.Drawing.Color
                 .FromArgb(ToHex(color.a), ToHex(color.r), ToHex(color.g), ToHex(color.b))

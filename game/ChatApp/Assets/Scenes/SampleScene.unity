@@ -2501,6 +2501,12 @@ MonoBehaviour:
   MessagePrefab: {fileID: 51813267532509292, guid: 3f1068810c05627479f9fe2d16e6efe7, type: 3}
   LoginCanvas: {fileID: 199524817}
   ChatCanvas: {fileID: 2051831960}
+  hostText: {fileID: 1850706524}
+  nameText: {fileID: 1371585314}
+  colorText: {fileID: 1443630553}
+  loginButton: {fileID: 790790385}
+  messageText: {fileID: 1313919352}
+  sendButton: {fileID: 1074568631}
   messageContainer: {fileID: 529096759}
 --- !u!1 &1371585312
 GameObject:
@@ -2515,7 +2521,7 @@ GameObject:
   - component: {fileID: 1371585315}
   - component: {fileID: 1371585314}
   m_Layer: 5
-  m_Name: UserNameText
+  m_Name: userNameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
