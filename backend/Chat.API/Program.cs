@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using Chat.API.DataAccess;
+using Chat.API.Hubs;
 using Chat.API.Mapping;
+using Chat.API.Services;
 using Mapster;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +18,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ChatContext>();
+
+builder.Services.AddSingleton<MessageRepository>();
+builder.Services.AddSingleton<UserRepository>();
 
 var mappingConfig = TypeAdapterConfig.GlobalSettings.Default.Config;
 IList<IRegister> registers = mappingConfig.Scan(typeof(MessageConfig).Assembly);

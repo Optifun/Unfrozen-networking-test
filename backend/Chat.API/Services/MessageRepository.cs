@@ -26,7 +26,7 @@ namespace Chat.API.Services
                 .ToArrayAsync();
         }
 
-        public async void Create(string username, string text, long color)
+        public async Task Create(string username, string text, long color)
         {
             User? user = await _userRepository.Get(username, color);
             if (user == null)
