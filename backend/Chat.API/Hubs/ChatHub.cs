@@ -44,8 +44,8 @@ namespace Chat.API.Hubs
 
         private async Task FetchLastMessages()
         {
-            IEnumerable<Message> messages = await _messageRepository.GetLast(10);
-            await Clients.Caller.SendAsync(WSMessage.ReceiveLast10.ToString(), messages);
+            List<Message> messages = await _messageRepository.GetLast(20);
+            await Clients.Caller.SendAsync(WSMessage.ReceiveLast20.ToString(), messages);
         }
     }
 }

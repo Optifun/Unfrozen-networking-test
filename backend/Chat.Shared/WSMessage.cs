@@ -2,7 +2,7 @@
 {
     public enum WSMessage
     {
-        ReceiveLast10,
+        ReceiveLast20,
         Receive,
         SendMessage
     }

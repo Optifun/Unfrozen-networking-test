@@ -27,7 +27,7 @@ namespace Chat.Client
             _connection.Closed += OnClosed;
             _connection.Reconnected += OnReconnected;
             _connection.Reconnecting += OnReconnecting;
-            _connection.On(WSMessage.ReceiveLast10.ToString(), (IEnumerable<MessageDTO> messages) => { LastMessagesReceived?.Invoke(messages.ToList()); });
+            _connection.On(WSMessage.ReceiveLast20.ToString(), (IEnumerable<MessageDTO> messages) => { LastMessagesReceived?.Invoke(messages.ToList()); });
 
             _connection.On(WSMessage.Receive.ToString(), (MessageDTO message) => { MessageReceived?.Invoke(message); });
         }

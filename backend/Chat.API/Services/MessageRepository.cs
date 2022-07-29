@@ -21,8 +21,8 @@ namespace Chat.API.Services
         public async Task<List<Message>> GetLast(int count)
         {
             return await _context.Messages
-                .OrderBy(msg => msg.Created)
-                .TakeLast(count)
+                .OrderByDescending(msg => msg.Created)
+                .Take(count)
                 .ToListAsync();
         }
 
