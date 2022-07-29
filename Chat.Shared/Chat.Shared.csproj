@@ -1,9 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <TargetFrameworks>net6.0;netstandard2.1</TargetFrameworks>
+        <ImplicitUsings>disable</ImplicitUsings>
+        <TargetFrameworks>net48;net6.0;netstandard2.1</TargetFrameworks>
     </PropertyGroup>
-
+    
+    <PropertyGroup>
+        <OutputPath Label="">$(SolutionDir)/game/ChatApp/Assets/Scripts/SharedDlls</OutputPath>
+    </PropertyGroup>
 </Project>
