@@ -12,8 +12,7 @@ namespace Game
 
         private void Start()
         {
-            ChatClient client = new ChatClient();
-            _chat = new Chat(client, _chatUI);
+            _chat = new Chat(_chatUI);
             _chatUI.EnterLobby();
         }
     }

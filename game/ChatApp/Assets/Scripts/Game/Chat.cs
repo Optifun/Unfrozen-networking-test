@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net;
+using System.Threading.Tasks;
 using Chat.Client;
 using Chat.Shared;
 using Chat.Shared.DTO;
@@ -13,20 +14,13 @@ namespace Game
 {
     public class Chat
     {
-        private readonly ChatClient _client;
+        private ChatClient _client;
         private readonly ChatUI _chatUI;
         private UserDTO _user;
 
-        public Chat(ChatClient client, ChatUI chatUI)
+        public Chat(ChatUI chatUI)
         {
-            _client = client;
             _chatUI = chatUI;
-
-            _client.LastMessagesReceived += PopulateMessages;
-            _client.MessageReceived += PrintMessage;
-
-            _chatUI.OnLogin += Login;
-            _chatUI.OnSend += SendMessage;
         }
 
         private async void Login(IPAddress ipAddress, string username, Color color)
@@ -36,8 +30,19 @@ namespace Game
             {
                 _user = user;
                 _chatUI.EnterChat();
-                await _client.Connect();
+                await JoinChat(ipAddress);
             }
+        }
+
+        private Task JoinChat(IPAddress address)
+        {
+            _client = new ChatClient(address);
+            _client.LastMessagesReceived += PopulateMessages;
+            _client.MessageReceived += PrintMessage;
+
+            _chatUI.OnLogin += Login;
+            _chatUI.OnSend += SendMessage;
+            return _client.Connect();
         }
 
         private void SendMessage(string text)
