@@ -6,7 +6,7 @@ namespace Chat.Shared.DTO
 
         public string Name { get; }
 
-        public UserDTO(long color, string name)
+        public UserDTO(string name, long color)
         {
             Color = color;
             Name = name;
