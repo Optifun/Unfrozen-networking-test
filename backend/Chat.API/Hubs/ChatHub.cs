@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Chat.API.DataAccess;
-using Chat.API.DTO;
+using Chat.Shared.DTO;
 using Chat.API.Services;
+using Chat.Shared;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 

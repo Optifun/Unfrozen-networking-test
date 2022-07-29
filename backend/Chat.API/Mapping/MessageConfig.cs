@@ -1,5 +1,5 @@
 ﻿using Chat.API.DataAccess;
-using Chat.API.DTO;
+using Chat.Shared.DTO;
 using Mapster;
 
 namespace Chat.API.Mapping

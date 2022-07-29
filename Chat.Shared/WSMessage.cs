@@ -1,4 +1,4 @@
-﻿namespace Chat.API
+﻿namespace Chat.Shared
 {
     public enum WSMessage
     {

@@ -10,7 +10,7 @@ namespace Chat.API.Services
     public class MessageRepository
     {
         private readonly ChatContext _context;
-        private UserRepository _userRepository;
+        private readonly UserRepository _userRepository;
 
         public MessageRepository(ChatContext context, UserRepository userRepository)
         {
