@@ -10,6 +10,11 @@ services:
     project: backend/Chat.API/Chat.API.csproj
     bindings:
       - port: 8081
+    env:
+#      - ConnectionStrings:ChatApp="Host=localhost; Port=5551; Database=chat-db; Username=chat-backend; Password=12345;"
+      - ConnectionStrings:ChatApp="Host=localhost; Port=5551; Database=chat-db;"
+      - PGPASSWORD=12345
+      - PGUSER=chat-backend
     tags:
       - bc
   - name: postgres
