@@ -2,10 +2,10 @@
 
     <PropertyGroup>
         <ImplicitUsings>disable</ImplicitUsings>
-        <TargetFrameworks>net48;net6.0;netstandard2.1</TargetFrameworks>
+        <TargetFramework>netstandard2.1</TargetFramework>
     </PropertyGroup>
-    
+
     <PropertyGroup>
-        <OutputPath Label="">$(SolutionDir)/game/ChatApp/Assets/Scripts/SharedDlls</OutputPath>
+        <OutputPath>$(SolutionDir)/game/ChatApp/Assets/Scripts/SharedDlls</OutputPath>
     </PropertyGroup>
 </Project>
