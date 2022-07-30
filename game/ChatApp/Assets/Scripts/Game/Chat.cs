@@ -47,10 +47,10 @@ namespace Game
             return _client.Connect();
         }
 
-        private void SendMessage(string text)
+        private async void SendMessage(string text)
         {
             var message = new MessageDTO(_user.Name, text, _user.Color);
-            _client.SendMessageAsync(WSMessage.SendMessage, message);
+            await _client.SendMessageAsync(WSMessage.SendMessage, message);
             PrintMessage(message);
         }
 

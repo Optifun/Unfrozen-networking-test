@@ -23,9 +23,11 @@ namespace Chat.API.Hubs
 
         public override async Task OnConnectedAsync()
         {
+            await base.OnConnectedAsync();
             await FetchLastMessages();
         }
 
+        [HubMethodName(nameof(WSMessage.SendMessage))]
         public async Task SendMessage(MessageDTO message)
         {
             try
