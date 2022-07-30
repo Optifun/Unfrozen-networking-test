@@ -29,18 +29,20 @@ namespace Chat.API.DataAccess
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasPostgresExtension("uuid-ossp");
+
             modelBuilder.Entity<Message>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.ToTable("message");
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedNever()
+                    .HasColumnName("id");
 
                 entity.Property(e => e.Created)
                     .HasColumnType("timestamp without time zone")
                     .HasColumnName("created")
                     .HasDefaultValueSql("now()");
-
-                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Text)
                     .HasMaxLength(32)
@@ -49,7 +51,7 @@ namespace Chat.API.DataAccess
                 entity.Property(e => e.UserId).HasColumnName("userId");
 
                 entity.HasOne(d => d.User)
-                    .WithMany()
+                    .WithMany(p => p.Messages)
                     .HasForeignKey(d => d.UserId)
                     .HasConstraintName("Sender_id");
             });
@@ -59,8 +61,8 @@ namespace Chat.API.DataAccess
                 entity.ToTable("user");
 
                 entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("id");
+                    .HasColumnName("id")
+                    .HasDefaultValueSql("uuid_generate_v4()");
 
                 entity.Property(e => e.Color).HasColumnName("color");
 

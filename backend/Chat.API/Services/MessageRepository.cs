@@ -32,7 +32,8 @@ namespace Chat.API.Services
             if (user == null)
                 throw new InvalidOperationException($"User {username}:{color} dont exists");
 
-            _context.Messages.Add(new Message() {Id = Guid.NewGuid(), User = user, Text = text});
+            _context.Messages.Add(new Message() { User = user, Text = text});
+            await _context.SaveChangesAsync();
         }
     }
 }
