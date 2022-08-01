@@ -15,6 +15,7 @@ using UnityEngine.Networking;
 
 namespace Game
 {
+    public class Chat : IDisposable
     {
         private ChatClient _client;
         private readonly ChatUI _chatUI;
@@ -43,6 +44,8 @@ namespace Game
             _client = new ChatClient(address);
             _client.LastMessagesReceived += PopulateMessages;
             _client.MessageReceived += PrintMessage;
+            _client.Reconnecting += async exception => Debug.LogException(exception);
+            _client.Closed += async exception => Debug.LogException(exception);
 
             return _client.Connect();
         }
@@ -53,6 +56,7 @@ namespace Game
             await _client.SendMessageAsync(WSMessage.SendMessage, message);
             PrintMessage(message);
         }
+
 
         private async UniTask<UserDTO> SendAuthRequest(IPAddress ipAddress, string username, int color)
         {
@@ -82,6 +86,11 @@ namespace Game
         {
             foreach (var messageDto in messages)
                 _chatUI.Print(messageDto);
+        }
+
+        public void Dispose()
+        {
+            _client?.DisposeAsync();
         }
     }
 }
