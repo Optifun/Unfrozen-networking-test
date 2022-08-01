@@ -63,7 +63,7 @@ namespace Game
             string json = JsonConvert.SerializeObject(new UserDTO(username, color));
 
             UnityWebRequest request = await UnityWebRequest
-                .Put($"http://{ipAddress}:8081/Auth", Encoding.Default.GetBytes(json))
+                .Put($"http://{ipAddress}:8081/Auth/login", Encoding.Default.GetBytes(json))
                 .WithHeader("Content-Type", "application/json")
                 .WithHeader("Accept", "application/json")
                 .SendWebRequest();

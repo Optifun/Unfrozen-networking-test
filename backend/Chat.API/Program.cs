@@ -27,6 +27,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     {
         options.ExpireTimeSpan = TimeSpan.FromDays(1);
         options.SlidingExpiration = true;
+        options.AccessDeniedPath = "/Auth/user-profile";
     });
 
 builder.Services.AddScoped<MessageRepository>();
