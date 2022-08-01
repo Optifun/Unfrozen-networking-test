@@ -26,6 +26,7 @@ namespace Chat.API.Services
         {
             List<Message> list = await _context.Messages
                 .Include(msg => msg.User)
+                .AsNoTracking()
                 .OrderByDescending(msg => msg.Created)
                 .Take(count)
                 .AsSingleQuery()

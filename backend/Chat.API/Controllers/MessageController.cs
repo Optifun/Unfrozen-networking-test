@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Threading.Tasks;
 using Chat.API.DataAccess;
 using Chat.API.Services;
 using Chat.Shared.DTO;
@@ -23,11 +24,10 @@ namespace Chat.API.Controllers
         }
 
         [HttpGet("GetMessages")]
-        public IEnumerable<MessageDTO> Get([FromQuery] int lastCount)
+        public async Task<IEnumerable<MessageDTO>> Get([FromQuery] int lastCount)
         {
-            return _messageRepository
-                .GetLast(lastCount)
-                .Adapt<List<MessageDTO>>();
+            var messages = await _messageRepository.GetLast(lastCount);
+            return messages.Adapt<List<MessageDTO>>();
         }
     }
 }
