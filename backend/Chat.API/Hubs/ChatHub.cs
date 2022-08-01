@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using Chat.API.DataAccess;
 using Chat.Shared.DTO;
@@ -15,6 +19,7 @@ namespace Chat.API.Hubs
     {
         private readonly MessageRepository _messageRepository;
         private readonly ILogger<ChatHub> _logger;
+        private UserRepository _userRepository;
 
         public ChatHub(MessageRepository messageRepository, ILogger<ChatHub> logger)
         {
@@ -42,6 +47,20 @@ namespace Chat.API.Hubs
             }
 
             await Clients.Others.SendAsync(WSMessage.Receive.ToString(), message);
+        }
+
+        [HubMethodName(nameof(WSMessage.StreamAllUsers))]
+        public async IAsyncEnumerable<UserDTO> GetAllUsers(int pageSize, [EnumeratorCancellation] CancellationToken cancellationToken)
+        {
+            int usersCount = await _userRepository.CountUsers();
+            for (int pageNum = 0; pageNum < usersCount / pageSize; pageNum++)
+            {
+                if (cancellationToken.IsCancellationRequested) break;
+
+                UserDTO[] users = await _userRepository.GetUsers(pageNum, pageSize);
+                foreach (UserDTO user in users)
+                    yield return user;
+            }
         }
 
         private async Task FetchLastMessages()

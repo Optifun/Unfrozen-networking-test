@@ -4,6 +4,7 @@
     {
         ReceiveLast20,
         Receive,
-        SendMessage
+        SendMessage,
+        StreamAllUsers
     }
 }

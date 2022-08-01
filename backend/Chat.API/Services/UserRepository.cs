@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Chat.API.DataAccess;
+using Chat.Shared.DTO;
+using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
@@ -18,7 +22,7 @@ namespace Chat.API.Services
             User? user = await Get(nickname, color);
             if (user != null) return user;
 
-            EntityEntry<User> entry = _context.Users.Add(new User() { Name = nickname, Color = color});
+            EntityEntry<User> entry = _context.Users.Add(new User() {Name = nickname, Color = color});
             await _context.SaveChangesAsync();
             return entry.Entity;
         }
@@ -26,6 +30,21 @@ namespace Chat.API.Services
         public async Task<User?> Get(string nickname, long color)
         {
             return await _context.Users.FirstOrDefaultAsync(user => user.Name == nickname && user.Color == color);
+        }
+
+        public async Task<int> CountUsers() => 
+            await _context.Users.CountAsync();
+
+        public async Task<UserDTO[]> GetUsers(int pageNum, int pageSize)
+        {
+            UserDTO[] dtos = await _context.Users
+                .AsNoTracking()
+                .ProjectToType<UserDTO>()
+                .OrderBy(user => user.Name)
+                .Skip(pageNum * pageSize)
+                .Take(pageSize)
+                .ToArrayAsync();
+            return dtos;
         }
     }
 }

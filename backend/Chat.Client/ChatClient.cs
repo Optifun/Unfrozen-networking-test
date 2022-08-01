@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using Chat.Shared;
 using Chat.Shared.DTO;
@@ -37,6 +38,9 @@ namespace Chat.Client
 
         public Task SendMessageAsync(WSMessage messageType, object arg) =>
             _connection.SendAsync(messageType.ToString(), arg);
+
+        public IAsyncEnumerable<UserDTO> FetchUsers(int pageSize = 10) =>
+            _connection.StreamAsync<UserDTO>(WSMessage.StreamAllUsers.ToString(), pageSize);
 
         public Task Disconnect() =>
             _connection.StopAsync();
