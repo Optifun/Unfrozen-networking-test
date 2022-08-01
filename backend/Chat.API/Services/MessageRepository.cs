@@ -25,6 +25,7 @@ namespace Chat.API.Services
         public async Task<List<Message>> GetLast(int count)
         {
             List<Message> list = await _context.Messages
+                .Include(msg => msg.User)
                 .OrderByDescending(msg => msg.Created)
                 .Take(count)
                 .AsSingleQuery()
@@ -35,11 +36,11 @@ namespace Chat.API.Services
         public async Task Create(string username, string text, long color)
         {
             User? user = await _userRepository.Get(username, color);
-            if (user == null) 
+            if (user == null)
                 throw new InvalidOperationException($"User {username}:{color} dont exists");
 
-            _logger.Log(LogLevel.Debug,$"User found user with {user.Messages.Count} messages");
-            EntityEntry<Message> entry = _context.Messages.Add(new Message() { User = user, Text = text});
+            _logger.Log(LogLevel.Debug, $"User found user with {user.Messages.Count} messages");
+            EntityEntry<Message> entry = _context.Messages.Add(new Message() {User = user, Text = text});
             await _context.SaveChangesAsync();
             _logger.Log(LogLevel.Debug,$"Created message {entry.Entity}");
         }
