@@ -30,18 +30,18 @@ namespace Game
 
         private async void Login(IPAddress ipAddress, string username, Color color)
         {
-            UserDTO user = await SendAuthRequest(ipAddress, username, ToARGB(color));
+            (UserDTO user, Cookie cookie) = await SendAuthRequest(ipAddress, username, ToARGB(color));
             if (user != null)
             {
                 _user = user;
                 _chatUI.EnterChat();
-                await JoinChat(ipAddress);
+                await JoinChat(ipAddress, cookie);
             }
         }
 
-        private Task JoinChat(IPAddress address)
+        private Task JoinChat(IPAddress address, Cookie cookie)
         {
-            _client = new ChatClient(address);
+            _client = new ChatClient(address, cookie);
             _client.LastMessagesReceived += PopulateMessages;
             _client.MessageReceived += PrintMessage;
             _client.Reconnecting += async exception => Debug.LogException(exception);
@@ -58,7 +58,7 @@ namespace Game
         }
 
 
-        private async UniTask<UserDTO> SendAuthRequest(IPAddress ipAddress, string username, int color)
+        private async UniTask<(UserDTO, Cookie)> SendAuthRequest(IPAddress ipAddress, string username, int color)
         {
             string json = JsonConvert.SerializeObject(new UserDTO(username, color));
 
@@ -69,9 +69,16 @@ namespace Game
                 .SendWebRequest();
 
             if (request.result == UnityWebRequest.Result.Success)
-                return JsonConvert.DeserializeObject<UserDTO>(request.downloadHandler.text);
+            {
+                string authCookie = request.GetResponseHeader("Set-Cookie");
+                int start = authCookie.IndexOf("=") + 1;
+                int end = authCookie.IndexOf(";");
+                string token = authCookie.Substring(start, end - start);
+                var cookie = new Cookie(".AspNetCore.Cookies", token, "/", ipAddress.ToString());
+                return (JsonConvert.DeserializeObject<UserDTO>(request.downloadHandler.text), cookie);
+            }
 
-            return null;
+            return (null, null);
         }
 
         private int ToARGB(Color color) =>
