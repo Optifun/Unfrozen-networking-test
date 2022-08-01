@@ -8,9 +8,9 @@ namespace UI
     {
         [SerializeField] private TMP_Text _text;
 
-        public void Initialize(string username, Color color, string text)
+        public void Initialize(string username, string text, Color color)
         {
-            _text.text = $"<color={color.ToHexString()}>{username}</color>: {text}";
+            _text.text = $"<color=#{color.ToHexString()}>{username}</color>: {text}";
         }
     }
 }

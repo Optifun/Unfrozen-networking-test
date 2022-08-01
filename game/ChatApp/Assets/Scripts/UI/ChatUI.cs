@@ -57,7 +57,7 @@ namespace UI
         public void Print(MessageDTO message)
         {
             MessageBubble messageView = Instantiate(MessagePrefab, messageContainer);
-            messageView.Initialize(message.Username, Color.black, message.Text);
+            messageView.Initialize(message.Username, message.Text, System.Drawing.Color.FromArgb((int) message.Color).ToUColor());
         }
 
         public void EnterChat()

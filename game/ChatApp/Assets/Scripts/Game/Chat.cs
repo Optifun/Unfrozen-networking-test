@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,6 @@ using UnityEngine.Networking;
 
 namespace Game
 {
-    public class Chat
     {
         private ChatClient _client;
         private readonly ChatUI _chatUI;
@@ -70,15 +70,8 @@ namespace Game
             return null;
         }
 
-        private int ToARGB(Color color)
-        {
-            int ToHex(float value) =>
-                (int) (value * 255);
-
-            return System.Drawing.Color
-                .FromArgb(ToHex(color.a), ToHex(color.r), ToHex(color.g), ToHex(color.b))
-                .ToArgb();
-        }
+        private int ToARGB(Color color) =>
+            color.ToColor().ToArgb();
 
         private void PrintMessage(MessageDTO message)
         {
