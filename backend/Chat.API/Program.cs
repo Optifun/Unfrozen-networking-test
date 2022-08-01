@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using Chat.API.DataAccess;
 using Chat.API.Hubs;
 using Chat.API.Mapping;
 using Chat.API.Services;
 using Mapster;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -19,6 +21,13 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ChatContext>();
 builder.Services.AddSignalR(options => { options.EnableDetailedErrors = true; });
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.ExpireTimeSpan = TimeSpan.FromDays(1);
+        options.SlidingExpiration = true;
+    });
 
 builder.Services.AddScoped<MessageRepository>();
 builder.Services.AddScoped<UserRepository>();
@@ -41,6 +50,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

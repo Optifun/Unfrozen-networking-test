@@ -7,6 +7,7 @@ using System.Threading.Channels;
 using System.Threading.Tasks;
 using Chat.Shared;
 using Chat.Shared.DTO;
+using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Chat.Client
@@ -21,9 +22,13 @@ namespace Chat.Client
         public event Func<string, Task> Reconnected;
         public event Func<Exception, Task> Reconnecting;
 
-        public ChatClient(IPAddress address)
+        public ChatClient(IPAddress address, Cookie authCookie)
         {
-            _connection = new HubConnectionBuilder().WithUrl($"http://{address}:8081/ws/chat").Build();
+            _connection = new HubConnectionBuilder().WithUrl($"http://{address}:8081/ws/chat", options =>
+            {
+                options.Cookies.Add(authCookie);
+                options.Transports = HttpTransportType.WebSockets | HttpTransportType.LongPolling;
+            }).Build();
 
             _connection.Closed += OnClosed;
             _connection.Reconnected += OnReconnected;
