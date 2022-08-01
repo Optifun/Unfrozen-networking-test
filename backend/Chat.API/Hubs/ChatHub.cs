@@ -19,18 +19,28 @@ namespace Chat.API.Hubs
     {
         private readonly MessageRepository _messageRepository;
         private readonly ILogger<ChatHub> _logger;
-        private UserRepository _userRepository;
-
-        public ChatHub(MessageRepository messageRepository, ILogger<ChatHub> logger)
+        private readonly UserRepository _userRepository;
+        private readonly IChatUsers _usersCollection;
+        
+        public ChatHub(MessageRepository messageRepository, UserRepository userRepository, IChatUsers usersCollection, ILogger<ChatHub> logger)
         {
             _messageRepository = messageRepository;
             _logger = logger;
+            _usersCollection = usersCollection;
+            _userRepository = userRepository;
         }
 
         public override async Task OnConnectedAsync()
         {
             await base.OnConnectedAsync();
+            // _usersCollection.Add();
             await FetchLastMessages();
+        }
+
+        public override async Task OnDisconnectedAsync(Exception? exception)
+        {
+            await base.OnDisconnectedAsync(exception);
+            // _usersCollection.Remove();
         }
 
         [HubMethodName(nameof(WSMessage.SendMessage))]

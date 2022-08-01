@@ -18,13 +18,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ChatContext>();
-builder.Services.AddSignalR(options =>
-{
-    options.EnableDetailedErrors = true;
-});
+builder.Services.AddSignalR(options => { options.EnableDetailedErrors = true; });
 
 builder.Services.AddScoped<MessageRepository>();
 builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<IChatUsers, InMemoryChatUsers>();
 
 var mappingConfig = TypeAdapterConfig.GlobalSettings.Default.Config;
 IList<IRegister> registers = mappingConfig.Scan(typeof(MessageConfig).Assembly);
