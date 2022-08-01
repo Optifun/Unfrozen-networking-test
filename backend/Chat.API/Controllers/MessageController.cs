@@ -5,6 +5,7 @@ using Chat.API.DataAccess;
 using Chat.API.Services;
 using Chat.Shared.DTO;
 using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -23,6 +24,7 @@ namespace Chat.API.Controllers
             _logger = logger;
         }
 
+        [Authorize]
         [HttpGet("GetMessages")]
         public async Task<IEnumerable<MessageDTO>> Get([FromQuery] int lastCount)
         {

@@ -16,7 +16,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Chat.API.Hubs
 {
-    [Authorize(CookieAuthenticationDefaults.AuthenticationScheme)]
+    [Authorize]
     public class ChatHub : Hub
     {
         private readonly MessageRepository _messageRepository;
@@ -54,7 +54,7 @@ namespace Chat.API.Hubs
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
             await base.OnDisconnectedAsync(exception);
-            
+
             if (_user != null)
                 _usersCollection.Remove(_user);
         }
