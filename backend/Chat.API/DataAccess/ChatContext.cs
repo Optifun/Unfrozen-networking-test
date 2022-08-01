@@ -35,9 +35,7 @@ namespace Chat.API.DataAccess
             {
                 entity.ToTable("message");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Created)
                     .HasColumnType("timestamp without time zone")
@@ -60,9 +58,7 @@ namespace Chat.API.DataAccess
             {
                 entity.ToTable("user");
 
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
-                    .HasDefaultValueSql("uuid_generate_v4()");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Color).HasColumnName("color");
 

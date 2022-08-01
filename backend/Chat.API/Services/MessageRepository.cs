@@ -39,7 +39,7 @@ namespace Chat.API.Services
                 throw new InvalidOperationException($"User {username}:{color} dont exists");
 
             _logger.Log(LogLevel.Debug,$"User found user with {user.Messages.Count} messages");
-            EntityEntry<Message> entry = _context.Messages.Add(new Message() {Id = Guid.NewGuid(), User = user, Text = text});
+            EntityEntry<Message> entry = _context.Messages.Add(new Message() { User = user, Text = text});
             await _context.SaveChangesAsync();
             _logger.Log(LogLevel.Debug,$"Created message {entry.Entity}");
         }

@@ -10,7 +10,7 @@ namespace Chat.API.DataAccess
             Messages = new HashSet<Message>();
         }
 
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; } = null!;
         public long Color { get; set; }
 

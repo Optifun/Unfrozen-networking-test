@@ -18,7 +18,7 @@ namespace Chat.API.Services
             User? user = await Get(nickname, color);
             if (user != null) return user;
 
-            EntityEntry<User> entry = _context.Users.Add(new User() {Id = Guid.NewGuid(), Name = nickname, Color = color});
+            EntityEntry<User> entry = _context.Users.Add(new User() { Name = nickname, Color = color});
             await _context.SaveChangesAsync();
             return entry.Entity;
         }
