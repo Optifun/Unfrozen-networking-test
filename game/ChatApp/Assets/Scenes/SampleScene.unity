@@ -3023,7 +3023,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MessagePrefab: {fileID: 51813267532509292, guid: 3f1068810c05627479f9fe2d16e6efe7, type: 3}
-  UserViewPrefab: {fileID: 0}
+  UserViewPrefab: {fileID: 6114055936852001454, guid: 0b6d6ffa3614b0d4f93e399bd01e2bbe, type: 3}
   LoginCanvas: {fileID: 199524817}
   ChatCanvas: {fileID: 2051831960}
   hostText: {fileID: 1850706524}
