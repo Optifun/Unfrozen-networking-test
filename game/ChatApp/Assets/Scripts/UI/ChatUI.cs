@@ -103,7 +103,7 @@ namespace UI
             UserView? userView = _views.FirstOrDefault(view => view.User == user);
             if (userView)
             {
-                userView.SetOnline(false);
+                userView.SetOnline(true);
                 PlaceUnder(userView.transform, onlineListStart);
             }
             else
