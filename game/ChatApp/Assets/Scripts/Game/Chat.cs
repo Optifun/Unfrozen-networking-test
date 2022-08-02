@@ -43,7 +43,7 @@ namespace Game
                 _user = user;
                 _users.Clear();
                 _onlineUsers.Clear();
-                
+
                 _chatUI.EnterChat();
                 await JoinChat(ipAddress, cookie);
                 await FetchUsers();
@@ -134,7 +134,12 @@ namespace Game
 
         public void Dispose()
         {
-            _client?.DisposeAsync();
+            Debug.Log("Chat destroyed");
+            if (_client != null)
+            {
+                _client.Disconnect();
+                _client.DisposeAsync();
+            }
         }
     }
 }

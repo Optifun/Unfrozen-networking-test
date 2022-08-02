@@ -15,5 +15,10 @@ namespace Game
             _chat = new Chat(_chatUI);
             _chatUI.EnterLobby();
         }
+
+        private void OnDestroy()
+        {
+            _chat.Dispose();
+        }
     }
 }
