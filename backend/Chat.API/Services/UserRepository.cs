@@ -32,17 +32,17 @@ namespace Chat.API.Services
             return await _context.Users.FirstOrDefaultAsync(user => user.Name == nickname && user.Color == color);
         }
 
-        public async Task<int> CountUsers() => 
+        public async Task<int> CountUsers() =>
             await _context.Users.CountAsync();
 
         public async Task<UserDTO[]> GetUsers(int pageNum, int pageSize)
         {
             UserDTO[] dtos = await _context.Users
                 .AsNoTracking()
-                .ProjectToType<UserDTO>()
                 .OrderBy(user => user.Name)
                 .Skip(pageNum * pageSize)
                 .Take(pageSize)
+                .ProjectToType<UserDTO>()
                 .ToArrayAsync();
             return dtos;
         }

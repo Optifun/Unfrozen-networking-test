@@ -4,7 +4,10 @@
     {
         ReceiveLast20,
         Receive,
+        UserJoined,
+        UserQuit,
         SendMessage,
-        StreamAllUsers
+        StreamAllUsers,
+        StreamOnlineUsers
     }
 }
