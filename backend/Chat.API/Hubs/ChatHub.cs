@@ -78,18 +78,11 @@ namespace Chat.API.Hubs
         public async Task<ChannelReader<UserDTO>> GetAllUsers(int pageSize, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"{nameof(WSMessage.StreamAllUsers)} called");
-            
+
             int usersCount = await _userRepository.CountUsers();
             Channel<UserDTO> channel = Channel.CreateBounded<UserDTO>(usersCount);
 
-            for (int pageNum = 0; pageNum <= usersCount / pageSize; pageNum++)
-            {
-                if (cancellationToken.IsCancellationRequested) break;
-
-                UserDTO[] users = await _userRepository.GetUsers(pageNum, pageSize);
-                foreach (UserDTO user in users)
-                    await channel.Writer.WriteAsync(user, cancellationToken);
-            }
+            _ = SendUsers(channel.Writer, pageSize, usersCount, cancellationToken);
 
             return channel.Reader;
         }
@@ -98,12 +91,12 @@ namespace Chat.API.Hubs
         public async Task<ChannelReader<UserDTO>> GetOnlineUsers()
         {
             _logger.LogInformation($"{nameof(WSMessage.StreamOnlineUsers)} called");
-            
+
             List<UserDTO> users = _usersCollection.GetUsers();
+
             Channel<UserDTO> channel = Channel.CreateBounded<UserDTO>(users.Count);
-            
-            foreach (UserDTO user in users)
-                await channel.Writer.WriteAsync(user);
+
+            _ = SendOnlineUsers(channel.Writer, users);
 
             return channel.Reader;
         }
@@ -112,6 +105,28 @@ namespace Chat.API.Hubs
         {
             List<MessageDTO> messages = (await _messageRepository.GetLast(20)).Adapt<List<MessageDTO>>();
             await Clients.Caller.SendAsync(WSMessage.ReceiveLast20.ToString(), messages);
+        }
+
+        private async Task SendOnlineUsers(ChannelWriter<UserDTO> channelWriter, List<UserDTO> users)
+        {
+            foreach (UserDTO user in users)
+                await channelWriter.WriteAsync(user);
+
+            channelWriter.Complete();
+        }
+
+        private async Task SendUsers(ChannelWriter<UserDTO> channelWriter, int pageSize, int usersCount, CancellationToken cancellationToken)
+        {
+            for (int pageNum = 0; pageNum <= usersCount / pageSize; pageNum++)
+            {
+                if (cancellationToken.IsCancellationRequested) break;
+
+                UserDTO[] users = await _userRepository.GetUsers(pageNum, pageSize);
+                foreach (UserDTO user in users)
+                    await channelWriter.WriteAsync(user, cancellationToken);
+            }
+
+            channelWriter.Complete();
         }
 
         private bool GetUserInfo(out UserDTO? user)
