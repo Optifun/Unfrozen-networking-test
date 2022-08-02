@@ -23,7 +23,6 @@ namespace Chat.API.Hubs
         private readonly ILogger<ChatHub> _logger;
         private readonly UserRepository _userRepository;
         private readonly IChatUsers _usersCollection;
-        private UserDTO? _user;
 
         public ChatHub(MessageRepository messageRepository, UserRepository userRepository, IChatUsers usersCollection, ILogger<ChatHub> logger)
         {
@@ -36,25 +35,27 @@ namespace Chat.API.Hubs
         public override async Task OnConnectedAsync()
         {
             if (!GetUserInfo(out UserDTO? user)) return;
+            _logger.LogInformation($"User {Context.ConnectionId} connected to hub");
 
-            _user = user;
-            _usersCollection.Add(_user);
+            _usersCollection.Add(Context.ConnectionId, user);
 
-            await Clients.Others.SendAsync(WSMessage.UserJoined.ToString(), _user);
+            await Clients.Others.SendAsync(WSMessage.UserJoined.ToString(), user);
             await FetchLastMessages();
         }
 
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
             if (exception == null)
-                _logger.LogInformation($"User {_user} disconnected from hub");
+                _logger.LogInformation($"User {Context.ConnectionId} disconnected from hub");
             else
-                _logger.LogError($"User {_user} disconnected from hub with exception {exception}");
+                _logger.LogError($"User {Context.ConnectionId} disconnected from hub with exception {exception}");
 
-            if (_user != null)
+
+            UserDTO? user = _usersCollection.Get(Context.ConnectionId);
+            if (user != null)
             {
-                _usersCollection.Remove(_user);
-                await Clients.Others.SendAsync(WSMessage.UserQuit.ToString(), _user);
+                _usersCollection.Remove(Context.ConnectionId);
+                await Clients.Others.SendAsync(WSMessage.UserQuit.ToString(), user);
             }
         }
 

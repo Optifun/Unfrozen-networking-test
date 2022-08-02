@@ -6,7 +6,9 @@ namespace Chat.API.Services
     public interface IChatUsers
     {
         public List<UserDTO> GetUsers();
-        void Add(UserDTO user);
+        public UserDTO? Get(string connectionId);
+        void Add(string connectionId, UserDTO user);
         void Remove(UserDTO user);
+        void Remove(string connectionId);
     }
 }
