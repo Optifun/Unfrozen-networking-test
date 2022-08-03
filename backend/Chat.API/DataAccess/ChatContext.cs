@@ -23,6 +23,7 @@ namespace Chat.API.DataAccess
         {
             if (!optionsBuilder.IsConfigured)
             {
+                Console.WriteLine("Fallback to default connection string");
                 optionsBuilder.UseNpgsql("Name=ChatApp");
             }
         }

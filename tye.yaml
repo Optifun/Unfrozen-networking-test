@@ -11,19 +11,18 @@ services:
     bindings:
       - port: 8081
     env:
-#      - ConnectionStrings:ChatApp="Host=localhost; Port=5551; Database=chat-db; Username=chat-backend; Password=12345;"
-      - ConnectionStrings:ChatApp="Host=localhost; Port=5551; Database=chat-db;"
-      - PGPASSWORD=12345
-      - PGUSER=chat-backend
+      - ConnectionStrings:ChatApp="Host=localhost; Port=5551; Database=chat-db; Username=postgres; Password=123;"
+    #      - ConnectionStrings:ChatApp="Host=localhost; Port=5551; Database=chat-db;"
+    #      - PGPASSWORD=12345
+    #      - PGUSER=chat-backend
     tags:
       - bc
-  - name: postgres
+  - name: chat-db
     image: postgres:12
     bindings:
-      - port: 5551
-        connectionString: "Host=${host}; Port=5551; Database=chat-db;"
+      - connectionString: "Host=${host}; Port=${port}; Database=chat-db; Username=postgres; Password=123;"
+        port: 5431
     env:
-      - POSTGRES_PASSWORD=12345
-        POSTGRES_USER=chat-backend
+      - POSTGRES_PASSWORD=123
     tags:
       - db

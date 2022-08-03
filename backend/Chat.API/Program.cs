@@ -9,6 +9,7 @@ using Mapster;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -22,6 +23,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ChatContext>();
+// builder.Services.AddDbContext<ChatContext>((provider, optionsBuilder) =>
+// {
+//     string connectionString = builder.Configuration.GetConnectionString("chat-db");
+//     Console.WriteLine(connectionString);
+//     optionsBuilder.UseNpgsql(connectionString, contextOptionsBuilder => { contextOptionsBuilder.EnableRetryOnFailure(3); });
+// });
 builder.Services.AddSignalR(options => { options.EnableDetailedErrors = true; });
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -63,9 +70,19 @@ app.MapHub<ChatHub>("/ws/chat");
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ChatContext>();
-    if (context.Database.GetPendingMigrations().Any())
+    if (!context.Database.CanConnect())
+        Console.WriteLine("Can't connect to DB");
+
+    try
     {
-        context.Database.Migrate();
+        bool created = context.Database.EnsureCreated();
+        Console.WriteLine($"DB bootstrapped={created}");
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine("Migration error");
+        Console.WriteLine(e);
+        throw;
     }
 }
 
