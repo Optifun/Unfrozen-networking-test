@@ -1,5 +1,15 @@
 {
+	"scopedRegistries": [
+		{
+		  "name": "Unity NuGet",
+		  "url": "https://unitynuget-registry.azurewebsites.net",
+		  "scopes": [
+			"org.nuget"
+		  ]
+		}
+  ],
   "dependencies": {
+	"org.nuget.scriban":  "2.1.0",
     "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask#2.1.0",
     "com.neuecc.unirx": "https://github.com/neuecc/UniRx.git?path=Assets/Plugins/UniRx/Scripts",
     "com.unity.collab-proxy": "1.17.2",
