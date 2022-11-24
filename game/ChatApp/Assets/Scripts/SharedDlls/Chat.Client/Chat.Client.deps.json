@@ -1,12 +1,12 @@
 {
   "runtimeTarget": {
-    "name": ".NETStandard,Version=v2.0/",
+    "name": ".NETStandard,Version=v2.0/win-x86",
     "signature": ""
   },
   "compilationOptions": {},
   "targets": {
     ".NETStandard,Version=v2.0": {},
-    ".NETStandard,Version=v2.0/": {
+    ".NETStandard,Version=v2.0/win-x86": {
       "Chat.Client/1.0.0": {
         "dependencies": {
           "Chat.Shared": "1.0.0",
@@ -460,7 +460,7 @@
     "NETStandard.Library/2.0.3": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-vMwd/z/HE2/bVnmRngdu0oMdC9sMOZmJuxoAe0Uzhy1p1kaffRbmOHM4z2UtJS3cGNOu+M9xQYaR/8IRSySQGg==",
+      "sha512": "sha512-st47PosZSHrjECdjeIzZQbzivYBJFv6P2nv4cj2ypdI204DO+vZ7l5raGMiX4eXMJ53RfOIg+/s4DHVZ54Nu2A==",
       "path": "netstandard.library/2.0.3",
       "hashPath": "netstandard.library.2.0.3.nupkg.sha512"
     },
@@ -502,7 +502,7 @@
     "System.Numerics.Vectors/4.5.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-veBmeqsrmy9u0l8ID2SWnwN0LRecm/sg3eD4zrhxHq3+3Oq4P+0yRsBgFZYr4Tkqf3TJk8Gn4b/mG/SCd/FqJg==",
+      "sha512": "sha512-QQTlPTl06J/iiDbJCiepZ4H//BVraReU4O4EoRw1U02H5TLUIT7xn3GnDp9AXPSlJUDyFs4uWjWafNX6WrAojQ==",
       "path": "system.numerics.vectors/4.5.0",
       "hashPath": "system.numerics.vectors.4.5.0.nupkg.sha512"
     },
